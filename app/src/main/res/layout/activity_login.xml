@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#e9e8dd"
+    tools:context=".LoginActivity" >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/email"
+        android:hint="example@mail.com"
+        android:layout_marginBottom="10dp" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="40dp"
+        android:inputType="textPassword"
+        android:hint="******"
+        android:layout_margin="10dp"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:id="@+id/loginbtn"
+        android:background="@drawable/btn_back"
+        android:textColor="#ffffff"
+        android:textAlignment="center"
+        android:text="Login"
+        android:layout_margin="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:id="@+id/forgotpass"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_back_red"
+            android:textColor="#ffffff"
+            android:textAlignment="center"
+            android:text="Forgot Password"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:id="@+id/register"
+            android:background="@drawable/btn_back_blue"
+            android:textColor="#ffffff"
+            android:textAlignment="center"
+            android:text="Register"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
