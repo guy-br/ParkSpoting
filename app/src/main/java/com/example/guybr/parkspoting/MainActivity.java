@@ -3,6 +3,7 @@ package com.example.guybr.parkspoting;
 /**
  * Created by guybr on 4/7/2015.
  */
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.*;
@@ -19,14 +20,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends Activity implements LocationListener {
     protected LocationManager locationManager;
@@ -35,8 +40,10 @@ public class MainActivity extends Activity implements LocationListener {
     private ServerRequest sr;
     ProgressDialog dialog;
     GoogleMap googleMap;
-    ImageButton centerLocationBtn;
-    Button sendToServer;
+    ImageButton centerLocationBtn, postParkBtn, findParkBtn;
+    //TextView t1 = (TextView)findViewById(R.id.textView);
+    //TextView t2 = (TextView)findViewById(R.id.textView2);
+    private static final String TAG = "myApp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +52,63 @@ public class MainActivity extends Activity implements LocationListener {
         final String token = myIntent.getStringExtra("firstKeyName");
         setContentView(R.layout.activity_main);
         sr = new ServerRequest();
-        sendToServer = (Button)findViewById(R.id.sendToServer);
-        dialog = new ProgressDialog(MainActivity.this);
-        dialog.show();
-        dialog.setMessage("Getting Coordinates");
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1, 1, this);
+
         Location userLocation = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+        //t1.setText(userLocation.toString());
         latitude = userLocation.getLatitude();
         longitude = userLocation.getLongitude();
         centerLocationBtn = (ImageButton)findViewById(R.id.centerLocationBtn);
+        postParkBtn = (ImageButton)findViewById(R.id.postParkBtn);
+        findParkBtn = (ImageButton)findViewById(R.id.findParkBtn);
 
-        sendToServer.setOnClickListener(new View.OnClickListener() {
+        findParkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Location myLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                longitude = myLocation.getLongitude();
+                latitude = myLocation.getLatitude();
+                List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+                pairs.add(new BasicNameValuePair("longitude", Double.toString(longitude)));
+                pairs.add(new BasicNameValuePair("latitude", Double.toString(latitude)));
+                ServerRequest srv = new ServerRequest();
+                JSONObject json = srv.getJSON("http://10.100.102.13:8080/findParkings", pairs);
+                Log.v(TAG, "Holy Shit Balls");
+
+                //if (json.isNull("longitude")) {
+                    //Print to screen TOOODODODODODODOD
+                //    Log.v(TAG, "null you fucker");
+                //}
+                //else {
+                    JSONArray parkings = null;
+                    try {
+                        parkings = json.getJSONArray("parkings");
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ParkingSpot[] parkinArr = new ParkingSpot[parkings.length()];
+                    for (int i = 0; i < parkings.length(); i++) {
+                        try {
+                            JSONArray[] locationParking = new JSONArray[parkings.length()];
+                            locationParking[i] = parkings.getJSONObject(i).getJSONArray("location");
+                            parkinArr[i] = new ParkingSpot(locationParking[i].getDouble(1), locationParking[i].getDouble(0));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.v(TAG, json.toString());
+                    }
+                createMapView();
+                addParkingMarker(parkinArr);
+                }
+            //}
+        });
+
+        postParkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
 
@@ -66,7 +119,7 @@ public class MainActivity extends Activity implements LocationListener {
                 pairs.add(new BasicNameValuePair("longitude", Double.toString(longitude)));
                 pairs.add(new BasicNameValuePair("latitude", Double.toString(latitude)));
                 pairs.add(new BasicNameValuePair("token", token));
-                JSONObject json = sr.getJSON("http://10.0.0.5:8080/location", pairs);
+                JSONObject json = sr.getJSON("http://10.100.102.13:8080/location", pairs);
             }
         });
 
@@ -97,15 +150,15 @@ public class MainActivity extends Activity implements LocationListener {
             Toast.makeText(getApplicationContext(), "Enable Location", Toast.LENGTH_LONG).show();
         }
         createMapView();
-        addMarker();
+        addMyLocationMarker();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        // TODO Auto-generated method stub
         dialog.show();
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        addMyLocationMarker();
     }
 
     @Override
@@ -155,18 +208,50 @@ public class MainActivity extends Activity implements LocationListener {
         }
     }
 
+
     /**
-     * Adds a marker to the map
+     * Adds a marker on the map for every parking that is
+     * within X radius from user.
      */
-    private void addMarker(){
+    private void addParkingMarker(ParkingSpot[] i_parkArr) {
+        if(googleMap != null)
+        {
+            for(int i = 0; i < i_parkArr.length; i++)
+            {
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(i_parkArr[i].m_Lat , i_parkArr[i].m_Lon))
+                        .title("Parking Spot")
+                        .draggable(false)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_marker))
+                        );
+            }
+        }
+    }
+
+    /**
+     * Adds the user location marker to the map
+     */
+    private void addMyLocationMarker(){
 
         /** Make sure that the map has been initialised **/
         if(null != googleMap){
             googleMap.addMarker(new MarkerOptions()
                             .position(new LatLng(latitude, longitude))
-                            .title("Marker")
-                            .draggable(true)
+                            .title("My Location")
+                            .draggable(false)
             );
+        }
+    }
+
+    private class ParkingSpot {
+
+        public double m_Lat;
+        public double m_Lon;
+
+        public ParkingSpot(double i_lat, double i_lon)
+        {
+            this.m_Lat = i_lat;
+            this.m_Lon = i_lon;
         }
     }
 }

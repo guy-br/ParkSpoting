@@ -3,36 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#e9e8dd"
+    android:background="@drawable/loginbackground"
     tools:context=".LoginActivity" >
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:id="@+id/email"
         android:hint="example@mail.com"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:gravity="bottom|center_horizontal"
+        android:background="#82ffffff" />
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_gravity="center"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:inputType="textPassword"
-        android:hint="******"
-        android:layout_margin="10dp"/>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:id="@+id/loginbtn"
-        android:background="@drawable/btn_back"
-        android:textColor="#ffffff"
-        android:textAlignment="center"
-        android:text="Login"
-        android:layout_margin="10dp"/>
+        android:hint="Password"
+        android:layout_margin="10dp"
+        android:gravity="bottom|center_horizontal"
+        android:background="#82ffffff"
+        android:autoText="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,16 +35,16 @@
         android:layout_margin="10dp"
         android:layout_gravity="center"
         android:orientation="vertical" >
+
         <Button
-            android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:id="@+id/forgotpass"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/btn_back_red"
+            android:layout_gravity="center"
+            android:id="@+id/loginbtn"
+            android:background="@drawable/btn_back"
             android:textColor="#ffffff"
             android:textAlignment="center"
-            android:text="Forgot Password"
+            android:text="Login"
             android:layout_margin="10dp"/>
 
         <Button
@@ -62,6 +57,19 @@
             android:textAlignment="center"
             android:text="Register"
             android:layout_margin="10dp"/>
+
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:id="@+id/forgotpass"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_back_red"
+            android:textColor="#ffffff"
+            android:textAlignment="center"
+            android:text="Forgot Password"
+            android:layout_margin="10dp"/>
+
     </LinearLayout>
 
 

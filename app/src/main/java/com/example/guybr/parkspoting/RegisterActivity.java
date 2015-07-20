@@ -48,7 +48,7 @@ public class RegisterActivity extends Activity {
                 params.add(new BasicNameValuePair("email", emailtxt));
                 params.add(new BasicNameValuePair("password", passwordtxt));
                 ServerRequest sr = new ServerRequest();
-                JSONObject json = sr.getJSON("http://10.0.0.1:8080/register",params);
+                JSONObject json = sr.getJSON("http://10.100.102.13:8080/register",params);
                 //JSONObject json = sr.getJSON("http://192.168.56.1:8080/register",params);
                 if(json != null){
                     try{

@@ -1,36 +1,52 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:weightSum="1">
 
     <fragment
         android:id="@+id/mapView"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="510dp"/>
+        android:layout_height="match_parent"/>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:weightSum="1">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/findParkBtn"
+        android:src="@drawable/greenparking"
+        android:background="@null"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="5dp"
+        android:alpha="0.8" />
 
-        <ImageButton
-            android:layout_width="90dp"
-            android:layout_height="100dp"
-            android:id="@+id/centerLocationBtn"
-            android:contentDescription="center_location.png"
-            android:src="@drawable/center_location"
-            android:layout_weight="0.07" />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/centerLocationBtn"
+        android:contentDescription="center_location.png"
+        android:src="@drawable/centerlocation"
+        android:background="@android:color/transparent"
+        android:layout_above="@+id/findParkBtn"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:alpha="0.8" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:text="Send to server"
-            android:id="@+id/sendToServer"
-            android:layout_weight="0.07" />
-    </LinearLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/postParkBtn"
+        android:src="@drawable/blueparking"
+        android:background="@null"
+        android:visibility="visible"
+        android:adjustViewBounds="false"
+        android:layout_below="@+id/centerLocationBtn"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="5dp"
+        android:alpha="0.8" />
 
-</LinearLayout>
+</RelativeLayout>
