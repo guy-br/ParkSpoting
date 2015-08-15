@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
 public class LoginActivity extends Activity {
     EditText email,password,res_email,code,newpass;
     Button login,cont,cont_code,cancel,cancel1,register,forpass;
@@ -55,7 +56,7 @@ public class LoginActivity extends Activity {
                 params.add(new BasicNameValuePair("email", emailtxt));
                 params.add(new BasicNameValuePair("password", passwordtxt));
                 ServerRequest sr = new ServerRequest();
-                JSONObject json = sr.getJSON("http://10.100.102.13:8080/login",params);
+                JSONObject json = sr.getJSON("http://10.0.0.5:8080/login",params);
 
                 if(json != null){
                     try{
@@ -101,7 +102,7 @@ public class LoginActivity extends Activity {
                         params = new ArrayList<NameValuePair>();
                         params.add(new BasicNameValuePair("email", email_res_txt));
                         //  JSONObject json = sr.getJSON("http://192.168.56.1:8080/api/resetpass", params);
-                        JSONObject json = sr.getJSON("http://10.100.102.13:8080/api/resetpass", params);
+                        JSONObject json = sr.getJSON("http://10.0.0.5:8080/api/resetpass", params);
                         if (json != null) {
                             try {
                                 String jsonstr = json.getString("response");
@@ -130,7 +131,7 @@ public class LoginActivity extends Activity {
                                             params.add(new BasicNameValuePair("email", email_res_txt));
                                             params.add(new BasicNameValuePair("code", code_txt));
                                             params.add(new BasicNameValuePair("newpass", npass_txt));
-                                            JSONObject json = sr.getJSON("http://10.100.102.13:8080/api/resetpass/chg", params);
+                                            JSONObject json = sr.getJSON("http://10.0.0.5:8080/api/resetpass/chg", params);
                                             //   JSONObject json = sr.getJSON("http://192.168.56.1:8080/api/resetpass/chg", params);
                                             if (json != null) {
                                                 try {
